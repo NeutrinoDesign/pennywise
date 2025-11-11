@@ -9,6 +9,11 @@ body {
   height: 5px;
 }
 
+/* Apple Glass: make the background transparent so vibrancy shows through */
+.apple-glass body {
+  background: transparent;
+}
+
 @media (prefers-contrast: more) {
   body {
     background: #0b0c0e;

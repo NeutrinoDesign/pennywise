@@ -62,3 +62,20 @@
   }
 
 }
+
+/* Apple Glass style */
+.apple-glass .settings-wrap .setting-controls {
+  background: rgba(22, 23, 26, 0.45);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-contrast: more) {
+  .apple-glass .settings-wrap .setting-controls {
+    background: #212121;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: 1px solid #ffffff;
+  }
+}

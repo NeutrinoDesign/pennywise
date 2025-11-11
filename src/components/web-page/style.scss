@@ -18,3 +18,8 @@
     height: calc(100vh - 55px) !important;
   }
 }
+
+/* Apple Glass: allow page to show vibrancy at edges when no content */
+.apple-glass .webpage {
+  background-color: transparent;
+}

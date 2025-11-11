@@ -10,6 +10,7 @@ const fs = require('fs');
 const os = require('os');
 
 const { setMainMenu } = require('./menu');
+const isMac = process.platform === 'darwin';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -23,9 +24,13 @@ function createWindow() {
     width: 700,
     height: 600,
     autoHideMenuBar: true,
-    backgroundColor: '#16171a',
+    backgroundColor: isMac ? '#00000000' : '#16171a',
     show: false,
     frame: argv.frameless ? false : true,
+    transparent: isMac ? true : false,
+    vibrancy: isMac ? 'under-window' : undefined,
+    visualEffectState: isMac ? 'active' : undefined,
+    titleBarStyle: isMac ? 'hiddenInset' : undefined,
     webPreferences: {
       // Security hardening
       nodeIntegration: false,

@@ -38,3 +38,28 @@
     }
   }
 }
+
+/* Apple Glass style */
+.apple-glass .top-nav {
+  background: rgba(22, 23, 26, 0.45);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.apple-glass .top-nav .search-input {
+  background: rgba(22, 23, 26, 0.35);
+  color: #ffffff;
+}
+
+@media (prefers-contrast: more) {
+  .apple-glass .top-nav {
+    background: #16171a;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom: 1px solid #ffffff;
+  }
+  .apple-glass .top-nav .search-input {
+    background: #2d2d2d;
+  }
+}

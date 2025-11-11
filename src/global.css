@@ -8,3 +8,18 @@ body {
 #nprogress .bar {
   height: 5px;
 }
+
+@media (prefers-contrast: more) {
+  body {
+    background: #0b0c0e;
+    color: #ffffff;
+  }
+  input, button, .btn, .search-input {
+    border: 2px solid #ffffff;
+    box-shadow: none;
+  }
+  .btn.btn-dark {
+    background-color: #000000;
+    color: #ffffff;
+  }
+}

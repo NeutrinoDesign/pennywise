@@ -3,28 +3,30 @@ import debounce from 'lodash.debounce';
 
 import './style.scss';
 
-const { ipcRenderer } = window.require('electron');
-
 class Settings extends React.Component {
   state = {
-    opacity: ipcRenderer.sendSync('opacity.get')
+    opacity: 100
   };
 
   componentDidMount() {
-    ipcRenderer.on('opacity.sync', this.onOpacitySync);
+    // Fetch initial opacity via secure bridge
+    window.pennywise.getOpacity().then((value) => {
+      this.setState({ opacity: value });
+    });
+    this.unsubscribeOpacity = window.pennywise.on('opacity.sync', this.onOpacitySync);
   }
 
   componentWillUnmount() {
-    ipcRenderer.removeListener('opacity.sync', this.onOpacitySync);
+    if (this.unsubscribeOpacity) this.unsubscribeOpacity();
   }
 
   // Debounce the setter so to avoid bombarding
   // electron with the opacity change requests
   setOpacity = debounce((opacity) => {
-    ipcRenderer.send('opacity.set', opacity);
+    window.pennywise.setOpacity(opacity);
   }, 400);
 
-  onOpacitySync = (event, opacity) => {
+  onOpacitySync = (opacity) => {
     this.setState({ opacity });
   };
 

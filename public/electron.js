@@ -15,16 +15,7 @@ const { setMainMenu } = require('./menu');
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-// Add flash support. If $USER_HOME/.pennywise-flash exists as plugin directory or symlink uses that.
-const flashPath = path.join(os.homedir(), ".pennywise-flash");
-if (flashPath && fs.existsSync(flashPath)) {
-  try {
-    app.commandLine.appendSwitch('ppapi-flash-path', fs.realpathSync(flashPath));
-    console.log("Attempting to load flash at " + flashPath)
-  } catch (e) {
-    console.log("Error finding flash at " + flashPath + ": " + e.message);
-  }
-}
+// Legacy Flash support removed (Flash is EOL and blocked on modern macOS/Electron)
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -36,8 +27,12 @@ function createWindow() {
     show: false,
     frame: argv.frameless ? false : true,
     webPreferences: {
-      plugins: true,
-      nodeIntegration: true,
+      // Security hardening
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: true,
+      preload: path.join(__dirname, 'preload.js'),
+      // Keep webview to preserve existing functionality
       webviewTag: true
     },
   });
@@ -89,11 +84,28 @@ function bindIpc() {
     // Multiplying by 100 – browser range is 0 to 100
     event.returnValue = mainWindow.getOpacity() * 100;
   });
+  // Promise-based getter for use with contextIsolation
+  ipcMain.handle('opacity.get', () => {
+    return mainWindow ? Math.round(mainWindow.getOpacity() * 100) : 100;
+  });
 
   ipcMain.on('opacity.set', (event, opacity) => {
     // Divide by 100 – window range is 0.1 to 1.0
     mainWindow.setOpacity(opacity / 100);
   });
+
+  // Expose argv safely to renderer
+  ipcMain.handle('get-argv', () => {
+    try {
+      const args = process.argv.slice(1) || [];
+      return args;
+    } catch {
+      return [];
+    }
+  });
+
+  // Expose platform info
+  ipcMain.handle('get-platform', () => process.platform || 'darwin');
 }
 
 // Makes the app start receiving the mouse interactions again

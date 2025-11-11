@@ -4,12 +4,9 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import Settings from '../settings';
 
-const os = window.require('os');
-const { ipcRenderer } = window.require('electron');
-
 class NavBar extends Component {
   urlInput = React.createRef();
-  platform = (os.platform() || '').toLowerCase();
+  platform = 'darwin';
   state = {
     url: this.props.url,
     settingsShown: false
@@ -46,11 +43,16 @@ class NavBar extends Component {
   };
 
   componentDidMount() {
-    ipcRenderer.on('nav.focus', this.focusUrlInput);
+    // Get platform info via secure bridge
+    window.pennywise.getPlatform().then((p) => {
+      this.platform = (p || 'darwin').toLowerCase();
+      this.forceUpdate();
+    });
+    this.unsubscribeFocus = window.pennywise.on('nav.focus', this.focusUrlInput);
   }
 
   componentWillUnmount() {
-    ipcRenderer.removeListener('nav.focus', this.focusUrlInput);
+    if (this.unsubscribeFocus) this.unsubscribeFocus();
   }
 
   // Check if there's a url update, and set state accordingly so

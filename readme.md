@@ -17,6 +17,8 @@
 
 Pennywise opens any website or media in a **small floating window that remains on top of all other applications**. Pennywise windows stays up **all the time**. No need to keep struggling with <kbd>alt + tab</kbd>, use Pennywise for **easy multitasking**.
 
+> Originally created by [Kamran Ahmed](https://github.com/kamranahmedse) and now updated and maintained by [Neutrino Design](https://neutrino.design).
+
 ## Features
 * Always **stays on top** of any open applications
 * **Adjustable opacity** – it gets out of your way while you work
@@ -66,6 +68,16 @@ Clone the repository, install the dependencies and start the app
 yarn install
 yarn start
 ```
+
+### macOS notes
+- The app is built with hardened runtime enabled and includes entitlements required by modern Electron on macOS (Sequoia and later).
+- For distribution outside the Mac App Store, notarization is required. Provide Apple ID credentials via environment variables supported by `electron-builder` (e.g. CSC_IDENTITY_AUTO_DISCOVERY, APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD) or configure an API key, then run:
+
+```bash
+yarn build
+```
+
+- Builds include both x64 and arm64 for Apple silicon compatibility. To generate a Universal binary, use `electron-builder`'s universal merge after building separate architectures.
 
 ## Shortcuts
 
@@ -128,4 +140,4 @@ Because the application helps in floating and [Pennywise loved to do that](http:
 Feel free to implement anything from the roadmap, submit pull requests, create issues, discuss ideas or spread the word.
 
 ## License
-MIT &copy; [Kamran Ahmed](https://twitter.com/kamranahmedse)
+MIT &copy; [Kamran Ahmed](https://twitter.com/kamranahmedse) • Updates & maintenance by [Neutrino Design](https://neutrino.design)

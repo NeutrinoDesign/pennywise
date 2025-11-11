@@ -1,8 +1,11 @@
 {
   "name": "pennywise",
-  "description": "Pennywise – Cross-platform application that allows you to open URLs in a floating window that always stays on top.",
+  "description": "Pennywise – originally created by Kamran Ahmed; updated and maintained by Neutrino Design.",
   "productName": "Pennywise",
-  "author": "Kamran Ahmed <kamranahmed.se@gmail.com>",
+  "author": "Kamran Ahmed <kamranahmed.se@gmail.com> (original creator)",
+  "contributors": [
+    "Neutrino Design (updates and maintenance)"
+  ],
   "version": "0.7.0",
   "private": true,
   "main": "public/electron.js",
@@ -11,7 +14,7 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "electron-pdf-window": "^1.0.12",
-    "electron-updater": "^4.0.6",
+    "electron-updater": "^6.3.9",
     "font-awesome": "^4.7.0",
     "is-url": "^1.2.4",
     "lodash.debounce": "^4.0.8",
@@ -29,7 +32,7 @@
     "_electron": "nodemon --exec \"cross-env APP_URL=http://localhost:3000 electron .\" --ext js --watch public/",
     "_build": "react-scripts build",
     "start": "concurrently \"yarn _react\" \"wait-on http://localhost:3000 && yarn _electron\" ",
-    "build": "yarn _build && build --mac --win --linux --x64 --ia32 -p always",
+    "build": "yarn _build && build --mac --win --linux --x64 --arm64 -p always",
     "icons": "electron-icon-maker -i public/img/pennywise.png -o public",
     "test": "mocha"
   },
@@ -46,7 +49,7 @@
     "extends": null,
     "appId": "info.kamranahmed.pennywise",
     "asar": true,
-    "copyright": "Copyright © 2018 Kamran Ahmed",
+    "copyright": "Copyright © 2018-2025 Kamran Ahmed & Neutrino Design",
     "files": [
       "public/**/*",
       "build/**/*",
@@ -55,7 +58,13 @@
     ],
     "mac": {
       "category": "public.app-category.navigation",
-      "icon": "public/img/icon.icns"
+      "icon": "public/img/icon.icns",
+      "hardenedRuntime": true,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist",
+      "target": [
+        "default"
+      ]
     },
     "linux": {
       "category": "Network",
@@ -100,14 +109,14 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^4.1.0",
-    "cross-env": "^5.2.0",
-    "electron": "^5.0.3",
-    "electron-builder": "^20.43.0",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3",
     "electron-icon-maker": "^0.0.4",
     "jquery": "^3.4.1",
     "mocha": "^6.1.4",
-    "node-sass": "^4.12.0",
+    "sass": "^1.77.6",
     "nodemon": "^1.19.1",
     "popper.js": "^1.15.0",
     "spectron": "^5.0.0",

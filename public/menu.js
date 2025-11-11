@@ -91,16 +91,16 @@ function setMainMenu(mainWindow) {
           label: 'Open',
           accelerator: 'CmdOrCtrl+O',
           click() {
-            dialog.showOpenDialog(function (fileNames) {
-              if (!fileNames || !fileNames[0]) {
-                return;
-              }
+            dialog.showOpenDialog({
+              properties: ['openFile']
+            }).then(({ canceled, filePaths }) => {
+              if (canceled || !filePaths || !filePaths[0]) return;
 
               // For the file URLs, load them directly
               // Append the `file://` prefix otherwise
-              const url = /^file:\/\/\//.test(fileNames[0]) ? fileNames[0] : `file://${ fileNames[0] }`;
+              const url = /^file:\/\/\//.test(filePaths[0]) ? filePaths[0] : `file://${ filePaths[0] }`;
               mainWindow.loadURL(url);
-            });
+            }).catch(() => {});
           }
         },
         { role: 'close' },

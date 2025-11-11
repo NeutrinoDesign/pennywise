@@ -51,7 +51,7 @@ const prepareVimeoUrl = (url) => {
     return url;
   }
 
-  return `http://player.vimeo.com/video/${videoHash}?autoplay=1&loop=1`;
+  return `https://player.vimeo.com/video/${videoHash}?autoplay=1&loop=1`;
 };
 
 /**
@@ -79,7 +79,7 @@ const prepareTwitchUrl = (url) => {
  * @return {*}
  */
 const prepareDailyMotionUrl = (url) => {
-  url = url.replace(/^http(s)?:\/\/dai\.ly\//, 'http://www.dailymotion.com/video/');
+  url = url.replace(/^http(s)?:\/\/dai\.ly\//, 'https://www.dailymotion.com/video/');
 
   const parsedUrl = parseUrl(url, true);
   if (!parsedUrl.host.includes('dailymotion.com') || !parsedUrl.pathname.includes('/video')) {
@@ -91,7 +91,7 @@ const prepareDailyMotionUrl = (url) => {
     return;
   }
 
-  return `http://www.dailymotion.com/embed/video/${videoHash}`;
+  return `https://www.dailymotion.com/embed/video/${videoHash}`;
 };
 
 /**

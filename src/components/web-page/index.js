@@ -6,10 +6,7 @@ import parseUrl from 'url-parse';
 import './style.scss';
 import NavBar from '../nav-bar';
 
-const { ipcRenderer } = window.require('electron');
-
-// Used by WebView while loading any pages
-const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36';
+// Default Electron user agent is sufficient on modern Electron
 
 class WebPage extends React.Component {
   webView = React.createRef();
@@ -100,14 +97,15 @@ class WebPage extends React.Component {
   };
 
   bindNavBar() {
-    ipcRenderer.on('nav.toggle', this.toggleNavBar);
-    ipcRenderer.on('nav.show', this.showNavBar);
-    ipcRenderer.on('webPage.reload', this.onReload)
+    this.unsubscribeToggle = window.pennywise.on('nav.toggle', this.toggleNavBar);
+    this.unsubscribeShow = window.pennywise.on('nav.show', this.showNavBar);
+    this.unsubscribeReload = window.pennywise.on('webPage.reload', this.onReload);
   }
 
   unbindNavBar() {
-    ipcRenderer.removeListener('opacity.toggle', this.toggleNavBar);
-    ipcRenderer.removeListener('nav.show', this.showNavBar);
+    if (this.unsubscribeToggle) this.unsubscribeToggle();
+    if (this.unsubscribeShow) this.unsubscribeShow();
+    if (this.unsubscribeReload) this.unsubscribeReload();
   }
 
   componentDidMount() {
@@ -129,8 +127,6 @@ class WebPage extends React.Component {
           />
         }
         <webview
-          plugins="true"
-          useragent={ USER_AGENT }
           ref={ this.webView }
           id="view"
           className="page"
